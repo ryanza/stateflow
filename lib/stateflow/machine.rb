@@ -8,10 +8,16 @@ module Stateflow
     end
 
     private
-    def state(name, args = {})
-      state = Stateflow::State.new(name)
-      @initial_state = state if @states.empty? || args[:initial] == true
-      @states[name.to_sym] = state
+    def state(*names, &block)
+      names.each do |name|
+        state = Stateflow::State.new(name, &block)
+        @initial_state = state if @states.empty? && @initial_state.nil?
+        @states[name.to_sym] = state
+      end
+    end
+    
+    def initial(name)
+      @initial_state = name.to_sym
     end
   end
 end
