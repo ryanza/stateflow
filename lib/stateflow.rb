@@ -24,19 +24,38 @@ module Stateflow
           state_name == current_state.name
         end
       end
-    end
-    
-    def states
-      @machine.states
+      
+      @machine.events.keys.each do |key|
+        define_method "#{key}!" do
+          fire_event(key)
+        end
+      end
     end
   end
   
   module InstanceMethods
     def current_state
-      self.class.machine.initial_state
+      @current_state ||= machine.initial_state
+    end
+    
+    def current_state=(new_state)
+      @current_state = new_state
+    end
+    
+    def machine
+      self.class.machine
+    end
+    
+    private
+    def fire_event(event)
+      event = machine.events[event.to_sym]
+      raise Exception.new("No event matches #{event}") if event.nil?
+      event.fire(current_state, self)
     end
   end
   
   autoload :Machine, 'stateflow/machine'
   autoload :State, 'stateflow/state'
+  autoload :Event, 'stateflow/event'
+  autoload :Transition, 'stateflow/transition'
 end

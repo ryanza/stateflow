@@ -1,23 +1,28 @@
 module Stateflow
   class Machine
-    attr_accessor :states, :initial_state
+    attr_accessor :states, :initial_state, :events
     
     def initialize(&machine)
-      @states = Hash.new
+      @states, @events = Hash.new, Hash.new
       instance_eval(&machine)
     end
 
     private
-    def state(*names, &block)
+    def initial(name)
+      @initial_state_name = name
+    end
+    
+    def state(*names, &options)
       names.each do |name|
-        state = Stateflow::State.new(name, &block)
-        @initial_state = state if @states.empty? && @initial_state.nil?
+        state = Stateflow::State.new(name, &options)
+        @initial_state = state if @states.empty? || @initial_state_name == name
         @states[name.to_sym] = state
       end
     end
     
-    def initial(name)
-      @initial_state = name.to_sym
+    def event(name, &transitions)
+      event = Stateflow::Event.new(name, &transitions)
+      @events[name.to_sym] = event
     end
   end
 end

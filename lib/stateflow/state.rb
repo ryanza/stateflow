@@ -19,7 +19,7 @@ module Stateflow
     
     def execute_action(action, base)
       action = @options[action.to_sym]
-
+      
       case action
       when Symbol, String
         base.send(action)
