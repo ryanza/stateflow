@@ -16,7 +16,9 @@ module Stateflow
       transition = @transitions.select{ |t| t.from.include? current_state.name }.first
       raise NoTransitionFound.new("No transition found for event #{@name}") if transition.nil?
       
-      new_state = klass.machine.states[transition.to]
+      return false unless transition.can_transition?(klass)
+      
+      new_state = klass.machine.states[transition.find_to_state(klass)]
       raise NoStateFound.new("Invalid state #{transition.to.to_s} for transition.") if new_state.nil?
       
       current_state.execute_action(:exit, klass)
