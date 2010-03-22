@@ -2,7 +2,10 @@
 
 == TODO
 
-This is the basics of the gem. Tests will be here shortly. Please check out the examples directory for usage until this readme gets fleshed out.
+* Persistence layers
+* Tests
+
+This is the basics of the gem. THIS IS NOT PRODUCTION READY UNTIL TESTS ARE DONE. Please check out the examples directory for usage until this readme gets fleshed out. Feel free to fork and modify as you please.
 
 == Note on Patches/Pull Requests
  
