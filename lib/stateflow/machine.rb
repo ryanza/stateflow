@@ -6,6 +6,10 @@ module Stateflow
       @states, @events = Hash.new, Hash.new
       instance_eval(&machine)
     end
+    
+    def state_column(name = nil)
+      @state_column ||= name.nil? ? :state : name
+    end
 
     private
     def initial(name)

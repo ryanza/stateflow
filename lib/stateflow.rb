@@ -1,11 +1,12 @@
 module Stateflow
   def self.included(base)
     base.send :include, InstanceMethods
+    Stateflow::Persistence.set(base)
     base.extend ClassMethods
   end
   
   def self.persistence
-    @@persistence ||= "active_record"
+    @@persistence ||= :active_record
   end
   
   def self.persistence=(persistence)
@@ -34,11 +35,12 @@ module Stateflow
   end
   
   module InstanceMethods
-    def current_state
-      @current_state ||= machine.initial_state
+    def current_state  
+      @current_state ||= load_from_persistence.nil? ? machine.initial_state : machine.states[load_from_persistence.to_sym]
     end
     
     def current_state=(new_state)
+      save_to_persistence(new_state.name.to_s)
       @current_state = new_state
     end
     
@@ -58,4 +60,5 @@ module Stateflow
   autoload :State, 'stateflow/state'
   autoload :Event, 'stateflow/event'
   autoload :Transition, 'stateflow/transition'
+  autoload :Persistence, 'stateflow/persistence'
 end
