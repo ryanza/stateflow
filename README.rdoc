@@ -2,10 +2,98 @@
 
 == TODO
 
-* Persistence layers
+* More Persistence layers
 * Tests
 
-This is the basics of the gem. THIS IS NOT PRODUCTION READY UNTIL TESTS ARE DONE. Please check out the examples directory for usage until this readme gets fleshed out. Feel free to fork and modify as you please.
+This is the basics of the gem. THIS IS NOT PRODUCTION READY UNTIL TESTS ARE DONE. Please check out the examples directory for usage until this README gets fleshed out. Feel free to fork and modify as you please.
+
+== Usage
+
+Stateflow supports persistence with MongoMapper, and ActiveRecord. Adding more is really basic, please request any if needed. 
+
+Stateflow defaults to ActiveRecord but you can set the persistence layer with:
+
+  Stateflow.persistence = :mongo_mapper
+OR
+  Stateflow.persistence = :active_record
+
+== Basic Example
+
+  require 'rubygems'
+  require 'stateflow'
+
+  class Robot
+    include Stateflow
+  
+    stateflow do
+      initial :green
+    
+      state :green, :yellow, :red
+    
+      event :change_color do
+        transitions :from => :green, :to => :yellow
+        transitions :from => :yellow, :to => :red
+        transitions :from => :red, :to => :green
+      end
+    end
+  end
+  
+== Advanced Example
+
+  require 'rubygems'
+  require 'stateflow'
+
+  class Test
+    include Stateflow
+  
+    stateflow do
+    
+      initial :love
+    
+      state :love do
+        enter lambda { |t| p "Entering love" }
+        exit :exit_love
+      end
+    
+      state :hate do
+        enter lambda { |t| p "Entering hate" }
+        exit lambda { |t| p "Exiting hate" }
+      end
+    
+      state :mixed do
+        enter lambda { |t| p "Entering mixed" }
+        exit lambda { |t| p "Exiting mixed" }
+      end
+    
+      event :b do
+        transitions :from => :love, :to => :hate, :if => :no_ice_cream
+        transitions :from => :hate, :to => :love
+      end
+    
+      event :a do
+        transitions :from => :love, :to => [:hate, :mixed], :decide => :likes_ice_cream?
+        transitions :from => [:hate, :mixed], :to => :love
+      end
+    end
+  
+    def likes_ice_cream?
+      rand(10) > 5 ? :mixeds : :hate
+    end
+  
+    def exit_love
+      p "Exiting love"
+    end
+  
+    def no_ice_cream
+      rand(4) > 2 ? true : false
+    end
+  end
+
+As you can see Stateflow allows dynamic :to transitions. *This allows your flows to be dynamic, and is the main feature of this gem over the others.*
+
+You can set the default column with the state_column function in the stateflow block. The default state column is ":state".
+
+  state_column :state
 
 == Note on Patches/Pull Requests
  

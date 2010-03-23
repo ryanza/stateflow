@@ -2,7 +2,7 @@ module Stateflow
   module Persistence
     module MongoMapper
       def self.install(base)
-        base.send :key, :state, String
+        base.send :key, self.machine.state_column.to_sym, String
         base.before_validation_on_create :ensure_initial_state
         base.send :include, InstanceMethods
       end
