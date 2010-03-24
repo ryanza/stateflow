@@ -7,17 +7,29 @@
 
 This is the basics of the gem. THIS IS NOT PRODUCTION READY UNTIL TESTS ARE DONE. Please check out the examples directory for usage until this README gets fleshed out. Feel free to fork and modify as you please.
 
+== INSTALL
+
+  gem install stateflow
+
 == Usage
 
-Stateflow supports persistence with MongoMapper, and ActiveRecord. Adding more is really basic, please request any if needed. 
+As you can see below, Stateflow's API is very similar to AASM, but allows for a more dynamic state transition flow. Stateflow supports persistence/storage with MongoMapper, and ActiveRecord. Request any others or push them to me.
 
 Stateflow defaults to ActiveRecord but you can set the persistence layer with:
 
   Stateflow.persistence = :mongo_mapper
 OR
   Stateflow.persistence = :active_record
+  
+Stateflow allows dynamic :to transitions with :decide. The result :decide returns needs to be one of the states listed in the :to array, otherwise it wont allow the transition. Please view the advanced example below for usage.
+
+You can set the default column with the state_column function in the stateflow block. The default state column is "state".
+
+  state_column :state
 
 == Basic Example
+
+Please note these examples need a persistence layer to operate. I might allow non persistent stateflows in the future.
 
   require 'rubygems'
   require 'stateflow'
@@ -88,12 +100,6 @@ OR
       rand(4) > 2 ? true : false
     end
   end
-
-As you can see Stateflow allows dynamic :to transitions. *This allows your flows to be dynamic, and is the main feature of this gem over the others.*
-
-You can set the default column with the state_column function in the stateflow block. The default state column is ":state".
-
-  state_column :state
 
 == Note on Patches/Pull Requests
  
