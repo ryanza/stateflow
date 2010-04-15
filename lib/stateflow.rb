@@ -1,8 +1,8 @@
 module Stateflow
   def self.included(base)
     base.send :include, InstanceMethods
-    Stateflow::Persistence.set(base)
     base.extend ClassMethods
+    Stateflow::Persistence.set(base)
   end
   
   def self.persistence
