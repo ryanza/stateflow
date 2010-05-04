@@ -8,11 +8,14 @@ module Stateflow
           Stateflow::Persistence::ActiveRecord.install(base)
         when :mongoid
           Stateflow::Persistence::Mongoid.install(base)
+        when :none
+          Stateflow::Persistence::None.install(base)
       end
     end
     
     autoload :MongoMapper, 'stateflow/persistence/mongo_mapper'
     autoload :ActiveRecord, 'stateflow/persistence/active_record'
     autoload :Mongoid, 'stateflow/persistence/mongoid'
+    autoload :None, 'stateflow/persistence/none'
   end
 end

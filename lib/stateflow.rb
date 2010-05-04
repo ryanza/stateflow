@@ -49,9 +49,9 @@ module Stateflow
     end
     
     private
-    def fire_event(event)
-      event = machine.events[event.to_sym]
-      raise Exception.new("No event matches #{event}") if event.nil?
+    def fire_event(event_name)
+      event = machine.events[event_name.to_sym]
+      raise Stateflow::NoEventFound.new("No event matches #{event_name}") if event.nil?
       event.fire(current_state, self)
     end
   end
@@ -61,4 +61,5 @@ module Stateflow
   autoload :Event, 'stateflow/event'
   autoload :Transition, 'stateflow/transition'
   autoload :Persistence, 'stateflow/persistence'
+  autoload :Exception, 'stateflow/exception'
 end

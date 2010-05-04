@@ -1,7 +1,4 @@
 module Stateflow
-  class NoTransitionFound < Exception; end
-  class NoStateFound < Exception; end
-  
   class Event
     attr_accessor :name, :transitions
     
