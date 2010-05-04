@@ -3,9 +3,9 @@
 == TODO
 
 * More Persistence layers
-* Tests
+* More Tests
 
-This is the basics of the gem. THIS IS NOT PRODUCTION READY UNTIL TESTS ARE DONE. Please check out the examples directory for usage until this README gets fleshed out. Feel free to fork and modify as you please.
+This is the basics of the gem. Please check out the examples directory or tests for usage until this README gets fleshed out. Feel free to fork and modify as you please.
 
 == INSTALL
 
@@ -13,14 +13,16 @@ This is the basics of the gem. THIS IS NOT PRODUCTION READY UNTIL TESTS ARE DONE
 
 == Usage
 
-As you can see below, Stateflow's API is very similar to AASM, but allows for a more dynamic state transition flow. Stateflow supports persistence/storage with MongoMapper, and ActiveRecord. Request any others or push them to me.
+As you can see below, Stateflow's API is very similar to AASM, but allows for a more dynamic state transition flow. Stateflow supports persistence/storage with Mongoid, MongoMapper, and ActiveRecord. Request any others or push them to me.
 
 Stateflow defaults to ActiveRecord but you can set the persistence layer with:
 
   Stateflow.persistence = :mongo_mapper
 OR
   Stateflow.persistence = :active_record
-  
+OR
+  Stateflow.persistence = :mongoid
+
 Stateflow allows dynamic :to transitions with :decide. The result :decide returns needs to be one of the states listed in the :to array, otherwise it wont allow the transition. Please view the advanced example below for usage.
 
 You can set the default column with the state_column function in the stateflow block. The default state column is "state".
@@ -29,10 +31,11 @@ You can set the default column with the state_column function in the stateflow b
 
 == Basic Example
 
-Please note these examples need a persistence layer to operate. I might allow non persistent stateflows in the future.
-
   require 'rubygems'
   require 'stateflow'
+  
+  # No persistence
+  Stateflow.persistence :none
 
   class Robot
     include Stateflow
@@ -54,6 +57,9 @@ Please note these examples need a persistence layer to operate. I might allow no
 
   require 'rubygems'
   require 'stateflow'
+  
+  # No persistence
+  Stateflow.persistence :none
 
   class Test
     include Stateflow
@@ -89,7 +95,7 @@ Please note these examples need a persistence layer to operate. I might allow no
     end
   
     def likes_ice_cream?
-      rand(10) > 5 ? :mixeds : :hate
+      rand(10) > 5 ? :mixed : :hate
     end
   
     def exit_love
