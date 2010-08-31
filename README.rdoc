@@ -4,6 +4,8 @@
 
 * More Persistence layers
 * More Tests
+* More features
+* Speeed!
 
 This is the basics of the gem. Please check out the examples directory or tests for usage until this README gets fleshed out. Feel free to fork and modify as you please.
 

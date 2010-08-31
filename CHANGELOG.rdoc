@@ -1,0 +1,2 @@
+= Version 0.1.2
+* Fixed Mongoid support - Thanks bmartin for pointing that out
