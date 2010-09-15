@@ -89,6 +89,27 @@ class Dater
   end
 end
 
+class Priority
+  include Stateflow
+  
+  stateflow do
+    initial :medium
+    state :low, :medium, :high
+    
+    event :low do
+      transitions :from => any, :to => :low
+    end
+    
+    event :medium do 
+      transitions :from => any, :to => :medium
+    end    
+    
+    event :high do 
+      transitions :from => any, :to => :high
+    end
+  end
+end
+
 describe Stateflow do
   describe "class methods" do
     it "should respond to stateflow block to setup the intial stateflow" do
@@ -271,6 +292,18 @@ describe Stateflow do
       date.gift!
       
       date.current_state.name.should == :single
+    end
+  end
+  
+  describe "transitions from any" do 
+    it "should properly change state" do
+      priority = Priority.new
+      priority.low!
+      priority.should be_low
+      priority.medium!
+      priority.should be_medium
+      priority.high!
+      priority.should be_high
     end
   end
 end

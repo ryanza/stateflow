@@ -25,7 +25,7 @@ module Stateflow
     end
     
     def event(name, &transitions)
-      event = Stateflow::Event.new(name, &transitions)
+      event = Stateflow::Event.new(name, self, &transitions)
       @events[name.to_sym] = event
     end
   end
