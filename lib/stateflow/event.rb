@@ -1,9 +1,10 @@
 module Stateflow
   class Event
-    attr_accessor :name, :transitions
+    attr_accessor :name, :transitions, :machine
     
-    def initialize(name, &transitions)
+    def initialize(name, machine=nil, &transitions)
       @name = name
+      @machine = machine
       @transitions = Array.new
       
       instance_eval(&transitions)
@@ -28,6 +29,10 @@ module Stateflow
     def transitions(args = {})
       transition = Stateflow::Transition.new(args)
       @transitions << transition
+    end
+    
+    def any
+      @machine.states.keys
     end
   end
 end
