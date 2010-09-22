@@ -1,2 +1,6 @@
+= Version 0.2
+* Added a transition to any event, please look at the tests to understand how it works - Thanks to nu7hatch for the patch!
+* Changed the persistence layers to use write_attribute, instead of update_attribute - Thanks to achirkunov
+
 = Version 0.1.2
 * Fixed Mongoid support - Thanks bmartin for pointing that out
