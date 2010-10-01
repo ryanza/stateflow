@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('stateflow', '0.2.0') do |p|
+Echoe.new('stateflow', '0.2.1') do |p|
   p.description    = "State machine that allows dynamic transitions for business workflows"
   p.url            = "http://github.com/ryanza/stateflow"
   p.author         = "Ryan Oberholzer"
