@@ -8,7 +8,7 @@ module Stateflow
       
       module InstanceMethods
         def load_from_persistence
-          self.send machine.state_column.to_sym
+          self.read_attribute(machine.state_column.to_sym)
         end
 
         def save_to_persistence(new_state)
