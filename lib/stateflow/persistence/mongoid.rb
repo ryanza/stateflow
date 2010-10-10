@@ -10,9 +10,18 @@ module Stateflow
         def load_from_persistence
           self.read_attribute(machine.state_column.to_sym)
         end
-
+        
         def save_to_persistence(new_state)
           self.update_attributes(machine.state_column.to_sym => new_state)
+        end
+        
+        def load_previous_from_persistence
+          self.read_attribute(machine.previous_state_column.to_sym) if machine.previous_state_column
+        end
+
+        def save_previous_to_persistence(old_state)
+          debugger
+          self.update_attributes(machine.previous_state_column.to_sym => old_state) if machine.previous_state_column
         end
 
         def ensure_initial_state

@@ -39,6 +39,16 @@ module Stateflow
       @current_state ||= load_from_persistence.nil? ? machine.initial_state : machine.states[load_from_persistence.to_sym]
     end
     
+    def previous_state  
+      @previous_state ||= load_previous_from_persistence.nil? ? nil : machine.states[load_previous_from_persistence.to_sym]
+    end
+    
+    def previous_state=(old_state)
+      debugger
+      save_previous_to_persistence(old_state.name.to_s)
+      @previous_state = old_state
+    end
+    
     def current_state=(new_state)
       save_to_persistence(new_state.name.to_s)
       @current_state = new_state

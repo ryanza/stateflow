@@ -11,6 +11,10 @@ module Stateflow
       @state_column ||= name.nil? ? :state : name
     end
 
+    def previous_state_column(name = nil)
+      @previous_state_column ||= name.nil? ? :previous_state : name
+    end
+
     private
     def initial(name)
       @initial_state_name = name
