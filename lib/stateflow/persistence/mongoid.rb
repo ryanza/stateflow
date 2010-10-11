@@ -20,7 +20,6 @@ module Stateflow
         end
 
         def save_previous_to_persistence(old_state)
-          debugger
           self.update_attributes(machine.previous_state_column.to_sym => old_state) if machine.previous_state_column
         end
 

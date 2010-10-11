@@ -44,7 +44,6 @@ module Stateflow
     end
     
     def previous_state=(old_state)
-      debugger
       save_previous_to_persistence(old_state.name.to_s)
       @previous_state = old_state
     end

@@ -11,7 +11,6 @@ module Stateflow
     end
     
     def fire(current_state, klass)
-      debugger
       transition = @transitions.select{ |t| t.from.include? current_state.name }.first
       raise NoTransitionFound.new("No transition found for event #{@name}") if transition.nil?
       
