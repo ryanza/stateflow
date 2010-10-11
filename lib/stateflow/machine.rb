@@ -8,11 +8,11 @@ module Stateflow
     end
     
     def state_column(name = nil)
-      @state_column ||= name.nil? ? :state : name
+      @state_column ||= name.nil? ? :_state : name
     end
 
     def previous_state_column(name = nil)
-      @previous_state_column ||= name.nil? ? :previous_state : name
+      @previous_state_column ||= name.nil? ? :_previous_state : name
     end
 
     private
