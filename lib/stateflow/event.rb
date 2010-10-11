@@ -19,10 +19,10 @@ module Stateflow
       new_state = klass.machine.states[transition.find_to_state(klass)]
       raise NoStateFound.new("Invalid state #{transition.to.to_s} for transition.") if new_state.nil?
       
-      current_state.execute_action(:exit, klass)
+      current_state.execute_action(:exit, klass, new_state)
       klass.previous_state = current_state
       klass.current_state = new_state
-      new_state.execute_action(:enter, klass)
+      new_state.execute_action(:enter, klass, current_state)
       true
     end
     

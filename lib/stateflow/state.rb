@@ -17,14 +17,14 @@ module Stateflow
       @options[:exit] = method.nil? ? block : method
     end
     
-    def execute_action(action, base)
+    def execute_action(action, base, state)
       action = @options[action.to_sym]
       
       case action
       when Symbol, String
-        base.send(action)
+        base.send(action, state)
       when Proc
-        action.call(base)
+        action.call(base, state)
       end
     end
   end
