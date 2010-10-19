@@ -21,6 +21,8 @@ module Stateflow
       
       current_state.execute_action(:exit, klass)
       klass.current_state = new_state
+      
+      klass._previous_state = current_state.name.to_s
       new_state.execute_action(:enter, klass)
       true
     end

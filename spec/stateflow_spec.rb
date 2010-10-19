@@ -110,6 +110,21 @@ class Priority
   end
 end
 
+class Stater
+  include Stateflow
+    
+  stateflow do
+    initial :bill
+    
+    state :bob, :bill
+    
+    event :lolcats do
+      transitions :from => :bill, :to => :bob
+    end
+  end
+end
+  
+
 describe Stateflow do
   describe "class methods" do
     it "should respond to stateflow block to setup the intial stateflow" do
@@ -304,6 +319,16 @@ describe Stateflow do
       priority.should be_medium
       priority.high!
       priority.should be_high
+    end
+  end
+  
+  describe "previous state" do
+    it "should display the previous state" do
+      stater = Stater.new
+      stater.lolcats!
+      
+      stater._previous_state.should == "bill"
+      stater.current_state == "bob"
     end
   end
 end

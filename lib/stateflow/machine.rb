@@ -11,7 +11,7 @@ module Stateflow
       @state_column ||= name.nil? ? :state : name
     end
 
-    private
+    private    
     def initial(name)
       @initial_state_name = name
     end

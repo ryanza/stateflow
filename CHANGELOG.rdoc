@@ -1,3 +1,6 @@
+= Version 0.2.2
+* Previous state can be accessed with `_previous_state` instance method after transitioning states
+
 = Version 0.2.1
 * Reverted the writes back to update_attributes
 
