@@ -108,6 +108,10 @@ You can set the default column with the state_column function in the stateflow b
       rand(4) > 2 ? true : false
     end
   end
+  
+== Extra's
+
+* When transitioning states, the previous state from which you have transitioned to can be accessed via `_previous_state`. See tests for more information.
 
 == Note on Patches/Pull Requests
  
