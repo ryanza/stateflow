@@ -146,7 +146,7 @@ describe Stateflow do
     end
     
     it "should respond to the current state setter" do
-      @r.should respond_to(:current_state=)
+      @r.should respond_to(:set_current_state)
     end
     
     it "should respond to the current machine" do
@@ -204,7 +204,7 @@ describe Stateflow do
     
     it "should call the fire_event method" do
       robot = Robot.new
-      robot.should_receive(:fire_event).with(:change_color)
+      robot.should_receive(:fire_event).with(:change_color, {:save=>true})
       robot.change_color!
     end
     
@@ -215,7 +215,7 @@ describe Stateflow do
     
     it "should fire the event" do
       robot = Robot.new
-      robot.should_receive(:fire_event).with(:change_color)
+      robot.should_receive(:fire_event).with(:change_color, {:save=>true})
       robot.change_color!
     end
     
@@ -246,7 +246,7 @@ describe Stateflow do
   describe "persistence" do 
     it "should attempt to persist the new state and the name should be a string" do
       robot = Robot.new
-      robot.should_receive(:save_to_persistence).with("yellow")
+      robot.should_receive(:save_to_persistence).with("yellow", {:save=>true})
       robot.change_color!
     end
     

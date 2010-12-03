@@ -27,8 +27,12 @@ module Stateflow
       end
       
       @machine.events.keys.each do |key|
+        define_method "#{key}" do
+          fire_event(key, :save => false)
+        end
+        
         define_method "#{key}!" do
-          fire_event(key)
+          fire_event(key, :save => true)
         end
       end
     end
@@ -41,8 +45,8 @@ module Stateflow
       @current_state ||= load_from_persistence.nil? ? machine.initial_state : machine.states[load_from_persistence.to_sym]
     end
     
-    def current_state=(new_state)
-      save_to_persistence(new_state.name.to_s)
+    def set_current_state(new_state, options)
+      save_to_persistence(new_state.name.to_s, options)
       @current_state = new_state
     end
     
@@ -51,10 +55,10 @@ module Stateflow
     end
     
     private
-    def fire_event(event_name)
+    def fire_event(event_name, options = {})
       event = machine.events[event_name.to_sym]
       raise Stateflow::NoEventFound.new("No event matches #{event_name}") if event.nil?
-      event.fire(current_state, self)
+      event.fire(current_state, self, options)
     end
   end
   

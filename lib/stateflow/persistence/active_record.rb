@@ -13,8 +13,9 @@ module Stateflow
           self.send machine.state_column.to_sym
         end
 
-        def save_to_persistence(new_state)
-          self.update_attribute(machine.state_column.to_sym, new_state)
+        def save_to_persistence(new_state, options)
+          self.send(machine.state_column.to_sym, new_state)
+          self.save if options[:save]
         end
         
         def ensure_initial_state
