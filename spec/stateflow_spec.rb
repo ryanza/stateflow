@@ -196,31 +196,28 @@ describe Stateflow do
   end
 
   describe "firing events" do
+    let(:robot) { Robot.new }
+
     it "should call the fire method on event" do
-      robot = Robot.new
       robot.machine.events[:change_color].should_receive(:fire)
       robot.change_color!
     end
 
     it "should call the fire_event method" do
-      robot = Robot.new
       robot.should_receive(:fire_event).with(:change_color, {:save=>true})
       robot.change_color!
     end
 
     it "should raise an exception if the event does not exist" do
-      robot = Robot.new
       lambda { robot.send(:fire_event, :fake) }.should raise_error(Stateflow::NoEventFound)
     end
 
     it "should fire the event" do
-      robot = Robot.new
       robot.should_receive(:fire_event).with(:change_color, {:save=>true})
       robot.change_color!
     end
 
     it "should update the event" do
-      robot = Robot.new
       robot.current_state.name.should == :green
       robot.change_color!
       robot.current_state.name.should == :yellow
