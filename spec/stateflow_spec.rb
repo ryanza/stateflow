@@ -197,30 +197,42 @@ describe Stateflow do
 
   describe "firing events" do
     let(:robot) { Robot.new }
-
-    it "should call the fire method on event" do
-      robot.machine.events[:change_color].should_receive(:fire)
-      robot.change_color!
-    end
-
-    it "should call the fire_event method" do
-      robot.should_receive(:fire_event).with(:change_color, {:save=>true})
-      robot.change_color!
-    end
+    let(:event) { :change_color }
+    subject { robot }
 
     it "should raise an exception if the event does not exist" do
       lambda { robot.send(:fire_event, :fake) }.should raise_error(Stateflow::NoEventFound)
     end
 
-    it "should fire the event" do
-      robot.should_receive(:fire_event).with(:change_color, {:save=>true})
-      robot.change_color!
+    shared_examples_for "an entity supporting state changes" do
+      context "when firing" do
+        after(:each) { subject.send(event_method) }
+        it "should call the fire method on event" do
+          subject.machine.events[event].should_receive(:fire)
+        end
+
+        it "should call the fire_event method" do
+          subject.should_receive(:fire_event).with(event, {:save=>persisted})
+        end
+      end
+
+      it "should update the current state" do
+        subject.current_state.name.should == :green
+        subject.send(event_method)
+        subject.current_state.name.should == :yellow
+      end
     end
 
-    it "should update the event" do
-      robot.current_state.name.should == :green
-      robot.change_color!
-      robot.current_state.name.should == :yellow
+    describe "bang event" do
+      let(:event_method) { :change_color! }
+      let(:persisted)    { true }
+      it_should_behave_like "an entity supporting state changes"
+    end
+
+    describe "non-bang event" do
+      let(:event_method) { :change_color }
+      let(:persisted)    { false }
+      it_should_behave_like "an entity supporting state changes"
     end
 
     describe "before filters" do
