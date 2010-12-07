@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+Stateflow.persistence = :none
+
 class Robot
   include Stateflow
 

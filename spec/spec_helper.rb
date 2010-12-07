@@ -6,7 +6,5 @@ require 'stateflow'
 require 'spec'
 require 'spec/autorun'
 
-Stateflow.persistence = :none
-
 Spec::Runner.configure do |config|
 end
