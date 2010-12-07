@@ -14,18 +14,18 @@ ActiveRecord::Migration.verbose = false
 
 class TestMigration < ActiveRecord::Migration
   def self.up
-    create_table :robots, :force => true do |t|
+    create_table :active_record_robots, :force => true do |t|
       t.column :state, :string
       t.column :name, :string
     end
   end
 
   def self.down
-    drop_table :robots
+    drop_table :active_record_robots
   end
 end
 
-class Robot < ActiveRecord::Base
+class ActiveRecordRobot < ActiveRecord::Base
   include Stateflow
   
   stateflow do
@@ -42,51 +42,89 @@ end
 describe Stateflow::Persistence::ActiveRecord do
   before(:all) { TestMigration.up }
   after(:all) { TestMigration.down }
-  after { Robot.delete_all }
+  after { ActiveRecordRobot.delete_all }
 
-  let(:robot) { Robot.new }
+  let(:robot) { ActiveRecordRobot.new }
 
-  it "should save to persistence with bang method" do
-    @robot = robot
-    @robot.state = "red"
-    @robot.new_record?.should be_true
+  describe "includes" do
+    it "should include current_state" do
+      robot.respond_to?(:current_state).should be_true
+    end
 
-    @robot.change!
+    it "should include current_state=" do
+      robot.respond_to?(:set_current_state).should be_true
+    end
 
-    @robot.new_record?.should be_false
-    @robot.reload.state.should == "green"
+    it "should include save_to_persistence" do
+      robot.respond_to?(:save_to_persistence).should be_true
+    end
+
+    it "should include load_from_persistence" do
+      robot.respond_to?(:load_from_persistence).should be_true
+    end
   end
 
-  it "should not save to persistence with no bang method" do
-    @robot = robot
-    @robot.state = "red"
-    @robot.new_record?.should be_true
+  describe "bang method" do
+    before do
+      @robot = robot
+      @robot.state = "red"
+    end
 
-    @robot.change
+    it "should call the set_current_state with save being true" do
+      @robot.should_receive(:set_current_state).with(@robot.machine.states[:green], {:save=>true})
+      @robot.change!
+    end
 
-    @robot.new_record?.should be_true
-    @robot.state.should == "green"
+    it "should save the record" do
+      @robot.new_record?.should be_true
+      @robot.change!
+      @robot.new_record?.should be_false
+      @robot.reload.state.should == "green"
+    end
+  end
+
+    describe "non bang method" do
+    before do
+      @robot = robot
+      @robot.state = "red"
+    end
+
+    it "should call the set_current_state with save being false" do
+      @robot.should_receive(:set_current_state).with(@robot.machine.states[:green], {:save=>false})
+      @robot.change
+    end
+
+    it "should not save the record" do
+      @robot.new_record?.should be_true
+      @robot.change
+      @robot.new_record?.should be_true
+      @robot.state.should == "green"
+    end
   end
 
   it "Make sure stateflow saves the initial state if no state is set" do
-    @robot = robot
+    @robot3 = robot
 
-    @robot.save
-    @robot.reload
+    @robot3.save
+    @robot3.reload
 
-    @robot.state.should == "red"
+    @robot3.state.should == "red"
   end
 
-  it "should load state from persistence" do
-    @robot = robot
-    @robot.state = "green"
-    @robot.name = "Bottie"
-    @robot.save
+  describe "load from persistence" do
+    before do
+      @robot = robot
+      @robot.state = "green"
+      @robot.name = "Bottie"
+      @robot.save
+    end
 
-    result = Robot.find_by_name("Bottie")
-    result.should_not be_blank
-    result.state.should == "green"
-    result.current_state.name.should == :green
+    it "should call the load_from_persistence method" do
+     @robot.reload
+     @robot.should_receive(:load_from_persistence)
+
+     @robot.current_state
+    end
   end
 end
 

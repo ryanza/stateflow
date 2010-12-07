@@ -8,5 +8,5 @@ Echoe.new('stateflow', '0.2.3') do |p|
   p.author         = "Ryan Oberholzer"
   p.email          = "ryan@platform45.com"
   p.ignore_pattern = ["tmp/*", "script/*"]
-  p.development_dependencies = ["rspec"]
+  p.development_dependencies = ["rspec", "activerecord", "mongoid"]
 end

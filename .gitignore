@@ -3,4 +3,4 @@ doc
 *.gem
 .redcar
 **.swp
-
+.bundle/
