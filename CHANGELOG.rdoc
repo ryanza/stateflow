@@ -1,3 +1,9 @@
+= Version 0.3.0
+* Added a non bang method for events (Check README)
+* Added tests to persistence layers (About time!)
+* Changed the way the persistence layers save to model
+* Protected state column is now supported!
+
 = Version 0.2.3
 * Silence depreciation warnings (Fixing irritating issue)
 

@@ -18,10 +18,17 @@ class TestMigration < ActiveRecord::Migration
       t.column :state, :string
       t.column :name, :string
     end
+
+    create_table :active_record_protected_robots, :force => true do |t|
+      t.column :state, :string
+      t.column :name, :string
+    end
+
   end
 
   def self.down
     drop_table :active_record_robots
+    drop_table :active_record_protected_robots
   end
 end
 
@@ -39,12 +46,29 @@ class ActiveRecordRobot < ActiveRecord::Base
   end
 end
 
+class ActiveRecordProtectedRobot < ActiveRecord::Base
+  include Stateflow
+  
+  attr_protected :state
+
+  stateflow do
+    initial :red
+
+    state :red, :green
+
+    event :change do
+      transitions :from => :red, :to => :green
+    end
+  end
+end
+
 describe Stateflow::Persistence::ActiveRecord do
   before(:all) { TestMigration.up }
   after(:all) { TestMigration.down }
-  after { ActiveRecordRobot.delete_all }
+  after { ActiveRecordRobot.delete_all; ActiveRecordProtectedRobot.delete_all }
 
   let(:robot) { ActiveRecordRobot.new }
+  let(:protected_robot) { ActiveRecordProtectedRobot.new }
 
   describe "includes" do
     it "should include current_state" do
@@ -75,11 +99,29 @@ describe Stateflow::Persistence::ActiveRecord do
       @robot.change!
     end
 
+    it "should call the setter method for the state column" do
+      @robot.should_receive(:state=).with("green")
+      @robot.change!
+    end
+
+    it "should call save after setting the state column" do
+      @robot.should_receive(:save)
+      @robot.change!
+    end
+
     it "should save the record" do
       @robot.new_record?.should be_true
       @robot.change!
       @robot.new_record?.should be_false
       @robot.reload.state.should == "green"
+    end
+
+    it "should save the protected method" do
+      @protected_robot = protected_robot
+      @protected_robot.new_record?.should be_true
+      @protected_robot.change!
+      @protected_robot.new_record?.should be_false
+      @protected_robot.reload.state.should == "green"
     end
   end
 
@@ -91,6 +133,16 @@ describe Stateflow::Persistence::ActiveRecord do
 
     it "should call the set_current_state with save being false" do
       @robot.should_receive(:set_current_state).with(@robot.machine.states[:green], {:save=>false})
+      @robot.change
+    end
+
+    it "should call the setter method for the state column" do
+      @robot.should_receive(:state=).with("green")
+      @robot.change
+    end
+
+    it "should call save after setting the state column" do
+      @robot.should_not_receive(:save)
       @robot.change
     end
 

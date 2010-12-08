@@ -58,6 +58,16 @@ describe Stateflow::Persistence::Mongoid do
       @robot.change!
     end
 
+    it "should call the setter method for the state column" do
+      @robot.should_receive(:state=).with("green")
+      @robot.change!
+    end
+
+    it "should call save after setting the state column" do
+      @robot.should_receive(:save)
+      @robot.change!
+    end
+
     it "should save the record" do
       @robot.new_record?.should be_true
       @robot.change!
@@ -74,6 +84,16 @@ describe Stateflow::Persistence::Mongoid do
 
     it "should call the set_current_state with save being false" do
       @robot.should_receive(:set_current_state).with(@robot.machine.states[:green], {:save=>false})
+      @robot.change
+    end
+
+    it "should call the setter method for the state column" do
+      @robot.should_receive(:state=).with("green")
+      @robot.change
+    end
+
+    it "should call save after setting the state column" do
+      @robot.should_not_receive(:save)
       @robot.change
     end
 
