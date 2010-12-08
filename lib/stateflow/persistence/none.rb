@@ -12,7 +12,7 @@ module Stateflow
           @state
         end
 
-        def save_to_persistence(new_state)
+        def save_to_persistence(new_state, options)
           @state = new_state
         end
       end

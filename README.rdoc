@@ -35,18 +35,18 @@ You can set the default column with the state_column function in the stateflow b
 
   require 'rubygems'
   require 'stateflow'
-  
+
   # No persistence
   Stateflow.persistence :none
 
   class Robot
     include Stateflow
-  
+
     stateflow do
       initial :green
-    
+
       state :green, :yellow, :red
-    
+
       event :change_color do
         transitions :from => :green, :to => :yellow
         transitions :from => :yellow, :to => :red
@@ -54,61 +54,65 @@ You can set the default column with the state_column function in the stateflow b
       end
     end
   end
-  
+
 == Advanced Example
 
   require 'rubygems'
   require 'stateflow'
-  
+
   # No persistence
   Stateflow.persistence :none
 
   class Test
     include Stateflow
-  
+
     stateflow do
-    
+
       initial :love
-    
+
       state :love do
         enter lambda { |t| p "Entering love" }
         exit :exit_love
       end
-    
+
       state :hate do
         enter lambda { |t| p "Entering hate" }
         exit lambda { |t| p "Exiting hate" }
       end
-    
+
       state :mixed do
         enter lambda { |t| p "Entering mixed" }
         exit lambda { |t| p "Exiting mixed" }
       end
-    
+
       event :b do
         transitions :from => :love, :to => :hate, :if => :no_ice_cream
         transitions :from => :hate, :to => :love
       end
-    
+
       event :a do
         transitions :from => :love, :to => [:hate, :mixed], :decide => :likes_ice_cream?
         transitions :from => [:hate, :mixed], :to => :love
       end
     end
-  
+
     def likes_ice_cream?
       rand(10) > 5 ? :mixed : :hate
     end
-  
+
     def exit_love
       p "Exiting love"
     end
-  
+
     def no_ice_cream
       rand(4) > 2 ? true : false
     end
   end
-  
+
+== Bang event vs non-bang event
+
+Bang events will save the model after call, where the non bang event will just update the state and call the transitions. (ie. model.change! vs model.change)
+
 == Extra's
 
 * When transitioning states, the previous state from which you have transitioned to can be accessed via `_previous_state`. See tests for more information.
