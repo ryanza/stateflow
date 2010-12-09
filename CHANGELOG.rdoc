@@ -1,3 +1,9 @@
+= Version 0.4.0
+* Changed the order of the hooks, now runs in the following order:
+	- Exit on previous state
+	- Enter on new state
+	- Save to persistence
+
 = Version 0.3.0
 * Added a non bang method for events (Check README)
 * Added tests to persistence layers (About time!)
