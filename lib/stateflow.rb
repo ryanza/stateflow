@@ -45,7 +45,7 @@ module Stateflow
       @current_state ||= load_from_persistence.nil? ? machine.initial_state : machine.states[load_from_persistence.to_sym]
     end
     
-    def set_current_state(new_state, options)
+    def set_current_state(new_state, options = {})
       save_to_persistence(new_state.name.to_s, options)
       @current_state = new_state
     end
