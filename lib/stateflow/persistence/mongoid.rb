@@ -2,8 +2,10 @@ module Stateflow
   module Persistence
     module Mongoid
       def self.install(base)
-        base.respond_to?(:before_validation_on_create) ? base.before_validation_on_create(:ensure_initial_state) : base.before_validation(:ensure_initial_state, :on => :create)
-        base.send :include, InstanceMethods
+        ActiveSupport::Deprecation.silence do
+          base.respond_to?(:before_validation_on_create) ? base.before_validation_on_create(:ensure_initial_state) : base.before_validation(:ensure_initial_state, :on => :create)
+          base.send :include, InstanceMethods
+        end
       end
 
       module InstanceMethods
