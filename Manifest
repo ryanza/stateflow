@@ -1,4 +1,6 @@
 CHANGELOG.rdoc
+Gemfile
+Gemfile.lock
 LICENCE
 Manifest
 README.rdoc
@@ -17,6 +19,8 @@ lib/stateflow/persistence/mongoid.rb
 lib/stateflow/persistence/none.rb
 lib/stateflow/state.rb
 lib/stateflow/transition.rb
+spec/orm/activerecord_spec.rb
+spec/orm/mongoid_spec.rb
 spec/spec_helper.rb
 spec/stateflow_spec.rb
 stateflow.gemspec
