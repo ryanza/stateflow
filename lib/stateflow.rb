@@ -17,12 +17,17 @@ module Stateflow
   end
   
   module ClassMethods
-    attr_reader :machine
-    
+    attr_accessor :machine
+
+    def inherited(klass)
+      super
+      klass.machine = machine
+    end
+
     def stateflow(&block)
-      @machine = Stateflow::Machine.new(&block)
+      self.machine = Stateflow::Machine.new(&block)
       
-      @machine.states.values.each do |state|
+      self.machine.states.values.each do |state|
         state_name = state.name
         define_method "#{state_name}?" do
           state_name == current_state.name
@@ -30,7 +35,7 @@ module Stateflow
         add_scope state if @machine.create_scopes?
       end
       
-      @machine.events.keys.each do |key|
+      self.machine.events.keys.each do |key|
         define_method "#{key}" do
           fire_event(key, :save => false)
         end
