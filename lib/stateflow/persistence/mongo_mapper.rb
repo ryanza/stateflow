@@ -13,7 +13,7 @@ module Stateflow
           self.send machine.state_column.to_sym
         end
 
-        def save_to_persistence(new_state, options)
+        def save_to_persistence(new_state, options = {})
           self.send("#{machine.state_column}=".to_sym, new_state)
           self.save if options[:save]
         end
