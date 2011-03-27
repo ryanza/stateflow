@@ -22,7 +22,8 @@ module Stateflow
       
       to = execute_action(@decide, base)
       
-      @to.include?(to) ? to : (raise NoStateFound.new("Decision did not return a state that was set in the 'to' argument"))
+      raise NoStateFound.new("Decision did not return a state that was set in the 'to' argument") unless @to.include?(to)
+      to
     end
       
     private
