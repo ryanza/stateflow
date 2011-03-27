@@ -6,7 +6,7 @@ module Stateflow
       @name = name
       @options = Hash.new
       
-      instance_eval(&options) if options
+      instance_eval(&options) if block_given?
     end
     
     def enter(method = nil, &block)
