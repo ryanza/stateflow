@@ -7,8 +7,8 @@ module Stateflow
       instance_eval(&machine)
     end
     
-    def state_column(name = nil)
-      @state_column ||= name.nil? ? :state : name
+    def state_column(name = :state)
+      @state_column ||= name
     end
 
     private    
