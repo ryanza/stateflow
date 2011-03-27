@@ -10,16 +10,16 @@ module Stateflow
       
       module InstanceMethods
         def load_from_persistence
-          self.send machine.state_column.to_sym
+          send machine.state_column.to_sym
         end
 
         def save_to_persistence(new_state, options = {})
-          self.send("#{machine.state_column}=".to_sym, new_state)
-          self.save if options[:save]
+          send("#{machine.state_column}=".to_sym, new_state)
+          save if options[:save]
         end
         
         def ensure_initial_state
-          send("#{self.machine.state_column.to_s}=", self.current_state.name.to_s) if self.send(self.machine.state_column.to_s).blank?
+          send("#{machine.state_column.to_s}=", current_state.name.to_s) if send(machine.state_column.to_s).blank?
         end
       end
     end
