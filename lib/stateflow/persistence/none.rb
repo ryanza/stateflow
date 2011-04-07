@@ -1,10 +1,8 @@
 module Stateflow
   module Persistence
     module None
-      def self.install(base)
-        base.send :include, InstanceMethods
-      end
-      
+      extend ActiveSupport::Concern
+
       module InstanceMethods
         attr_accessor :state
         

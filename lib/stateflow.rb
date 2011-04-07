@@ -1,8 +1,10 @@
+require 'active_support'
+
 module Stateflow
-  def self.included(base)
-    base.send :include, InstanceMethods
-    base.extend ClassMethods
-    Stateflow::Persistence.set(base)
+  extend ActiveSupport::Concern
+  
+  included do |base|
+    base.send :include, "Stateflow::Persistence::#{Stateflow.persistence.to_s.camelize}".constantize
   end
   
   def self.persistence
