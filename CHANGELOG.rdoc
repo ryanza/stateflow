@@ -1,3 +1,7 @@
+= Version 0.4.2
+  * Some code neatening by pedromenezes - Thanks!
+  * Added simple benchmark which is probably not accurate :)
+  
 = Version 0.4.1
 	* Removed the depreciation warnings - FINALLY :)
 
