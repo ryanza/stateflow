@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{stateflow}
-  s.version = "0.4.2"
+  s.version = "0.5.0.beta"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Oberholzer"]
-  s.date = %q{2011-04-07}
+  s.date = %q{2011-04-08}
   s.description = %q{State machine that allows dynamic transitions for business workflows}
   s.email = %q{ryan@platform45.com}
   s.extra_rdoc_files = ["CHANGELOG.rdoc", "README.rdoc", "lib/stateflow.rb", "lib/stateflow/event.rb", "lib/stateflow/exception.rb", "lib/stateflow/machine.rb", "lib/stateflow/persistence.rb", "lib/stateflow/persistence/active_record.rb", "lib/stateflow/persistence/mongo_mapper.rb", "lib/stateflow/persistence/mongoid.rb", "lib/stateflow/persistence/none.rb", "lib/stateflow/state.rb", "lib/stateflow/transition.rb"]
