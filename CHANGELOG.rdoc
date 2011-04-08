@@ -1,3 +1,7 @@
+= Version 0.5.0.beta
+  * Added a Railtie
+  * Changed up the detection for persistence in Rails
+
 = Version 0.4.2
   * Some code neatening by pedromenezes - Thanks!
   * Added simple benchmark which is probably not accurate :)
