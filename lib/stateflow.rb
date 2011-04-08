@@ -1,4 +1,5 @@
 require 'active_support'
+require 'stateflow/railtie' if defined?(Rails)
 
 module Stateflow
   extend ActiveSupport::Concern
@@ -13,6 +14,10 @@ module Stateflow
   
   def self.persistence=(persistence)
     @@persistence = persistence
+  end
+  
+  def self.active_persistences
+    @@active_persistences ||= []
   end
   
   module ClassMethods

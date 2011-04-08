@@ -136,6 +136,10 @@ describe Stateflow do
     it "should respond to the machine attr accessor" do
       Robot.should respond_to(:machine)
     end
+    
+    it "should return all active persistence layers" do
+      Stateflow.active_persistences.should == [:active_record, :mongo_mapper, :mongoid, :none]
+    end
   end
 
   describe "instance methods" do
