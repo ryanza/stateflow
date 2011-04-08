@@ -138,7 +138,7 @@ describe Stateflow do
     end
     
     it "should return all active persistence layers" do
-      Stateflow.active_persistences.should == [:active_record, :mongo_mapper, :mongoid, :none]
+      Stateflow::Persistence.active.should == [:active_record, :mongo_mapper, :mongoid, :none]
     end
   end
 

@@ -1,23 +1,18 @@
 require 'active_support'
-require 'stateflow/railtie' if defined?(Rails)
 
 module Stateflow
   extend ActiveSupport::Concern
   
   included do |base|
-    base.send :include, "Stateflow::Persistence::#{Stateflow.persistence.to_s.camelize}".constantize
+    Stateflow::Persistence.load!(base)
   end
   
   def self.persistence
-    @@persistence ||= :active_record
+    @@persistence ||= nil
   end
   
   def self.persistence=(persistence)
     @@persistence = persistence
-  end
-  
-  def self.active_persistences
-    @@active_persistences ||= []
   end
   
   module ClassMethods
@@ -76,3 +71,5 @@ module Stateflow
   autoload :Persistence, 'stateflow/persistence'
   autoload :Exception, 'stateflow/exception'
 end
+
+require 'stateflow/railtie' if defined?(Rails)
