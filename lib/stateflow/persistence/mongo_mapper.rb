@@ -1,11 +1,10 @@
 module Stateflow
   module Persistence
     module MongoMapper
-      def self.install(base)
-        ActiveSupport::Deprecation.silence do
-          base.respond_to?(:before_validation_on_create) ? base.before_validation_on_create(:ensure_initial_state) : base.before_validation(:ensure_initial_state, :on => :create)
-          base.send :include, InstanceMethods
-        end
+      extend ActiveSupport::Concern
+      
+      included do |base|
+        base.before_validation(:ensure_initial_state, :on => :create)
       end
       
       module InstanceMethods

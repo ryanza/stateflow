@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    stateflow (0.4.1)
+    stateflow (0.4.2)
+      activesupport
 
 GEM
   remote: http://rubygems.org/

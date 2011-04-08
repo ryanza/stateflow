@@ -1,12 +1,14 @@
+require 'active_support'
+
 module Stateflow
-  def self.included(base)
-    base.send :include, InstanceMethods
-    base.extend ClassMethods
-    Stateflow::Persistence.set(base)
+  extend ActiveSupport::Concern
+  
+  included do |base|
+    Stateflow::Persistence.load!(base)
   end
   
   def self.persistence
-    @@persistence ||= :active_record
+    @@persistence ||= nil
   end
   
   def self.persistence=(persistence)
@@ -69,3 +71,5 @@ module Stateflow
   autoload :Persistence, 'stateflow/persistence'
   autoload :Exception, 'stateflow/exception'
 end
+
+require 'stateflow/railtie' if defined?(Rails)

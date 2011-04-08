@@ -1,21 +1,29 @@
 module Stateflow
   module Persistence
-    def self.set(base)
-      case Stateflow.persistence
-        when :mongo_mapper
-          Stateflow::Persistence::MongoMapper.install(base)
-        when :active_record
-          Stateflow::Persistence::ActiveRecord.install(base)
-        when :mongoid
-          Stateflow::Persistence::Mongoid.install(base)
-        when :none
-          Stateflow::Persistence::None.install(base)
+    def self.active
+      persistences = Array.new
+      
+      Dir[File.dirname(__FILE__) + '/persistence/*.rb'].each do |file|
+        persistences << File.basename(file, File.extname(file)).underscore.to_sym
+      end
+      
+      persistences
+    end
+    
+    def self.load!(base)
+      begin
+        base.send :include, "Stateflow::Persistence::#{Stateflow.persistence.to_s.camelize}".constantize
+      rescue NameError
+        puts "[Stateflow] The ORM you are using does not have a Persistence layer. Defaulting to ActiveRecord."
+        puts "[Stateflow] You can overwrite the persistence with Stateflow.persistence = :new_persistence_layer"
+
+        Stateflow.persistence = :active_record 
+        base.send :include, "Stateflow::Persistence::ActiveRecord".constantize
       end
     end
     
-    autoload :MongoMapper, 'stateflow/persistence/mongo_mapper'
-    autoload :ActiveRecord, 'stateflow/persistence/active_record'
-    autoload :Mongoid, 'stateflow/persistence/mongoid'
-    autoload :None, 'stateflow/persistence/none'
+    Stateflow::Persistence.active.each do |p|
+      autoload p.to_s.camelize.to_sym, "stateflow/persistence/#{p.to_s}"
+    end
   end
 end
