@@ -56,6 +56,10 @@ module Stateflow
       self.class.machine
     end
     
+    def available_states
+      machine.states.keys
+    end
+    
     private
     def fire_event(event_name, options = {})
       event = machine.events[event_name.to_sym]
