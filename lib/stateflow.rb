@@ -1,4 +1,5 @@
 require 'active_support'
+require 'active_support/inflector'
 
 module Stateflow
   extend ActiveSupport::Concern
