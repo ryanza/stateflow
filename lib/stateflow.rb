@@ -26,6 +26,7 @@ module Stateflow
         define_method "#{state_name}?" do
           state_name == current_state.name
         end
+        add_scope state
       end
       
       @machine.events.keys.each do |key|

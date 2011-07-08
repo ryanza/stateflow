@@ -129,5 +129,19 @@ describe Stateflow::Persistence::Mongoid do
      @robot.current_state
     end
   end
+
+  describe "scopes" do
+    it "should be added for each state" do
+      MongoRobot.should respond_to(:red)
+      MongoRobot.should respond_to(:green)
+    end
+
+    it "should behave like Mongoid scopes" do
+      2.times { MongoRobot.create(:state => "red") }
+      3.times { MongoRobot.create(:state => "green") }
+      MongoRobot.red.count.should == 2
+      MongoRobot.green.count.should == 3
+    end
+  end
 end
 

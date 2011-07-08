@@ -178,5 +178,19 @@ describe Stateflow::Persistence::ActiveRecord do
      @robot.current_state
     end
   end
+  
+  describe "scopes" do
+    it "should be added for each state" do
+      ActiveRecordRobot.should respond_to(:red)
+      ActiveRecordRobot.should respond_to(:green)
+    end
+
+    it "should behave like Mongoid scopes" do
+      2.times { ActiveRecordRobot.create(:state => "red") }
+      3.times { ActiveRecordRobot.create(:state => "green") }
+      ActiveRecordRobot.red.count.should == 2
+      ActiveRecordRobot.green.count.should == 3
+    end
+  end
 end
 
