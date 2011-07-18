@@ -7,6 +7,12 @@ module Stateflow
         base.before_validation(:ensure_initial_state, :on => :create)
       end
       
+      module ClassMethods
+        def add_scope(state)
+          scope state.name, where(:state => state.name.to_s)
+        end
+      end
+
       module InstanceMethods
         def load_from_persistence
           send machine.state_column.to_sym

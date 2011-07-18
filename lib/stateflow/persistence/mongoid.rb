@@ -6,6 +6,12 @@ module Stateflow
       included do |base|
         base.before_validation(:ensure_initial_state, :on => :create)
       end
+
+      module ClassMethods
+        def add_scope(state)
+          scope state.name, where(:state => state.name.to_s)
+        end
+      end
       
       module InstanceMethods
         def load_from_persistence
