@@ -1,4 +1,5 @@
 require 'active_support'
+require 'active_support/inflector'
 
 module Stateflow
   extend ActiveSupport::Concern
@@ -26,7 +27,7 @@ module Stateflow
         define_method "#{state_name}?" do
           state_name == current_state.name
         end
-        add_scope state
+        add_scope state if @machine.create_scopes?
       end
       
       @machine.events.keys.each do |key|
