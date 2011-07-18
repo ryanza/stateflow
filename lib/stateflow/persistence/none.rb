@@ -2,6 +2,12 @@ module Stateflow
   module Persistence
     module None
       extend ActiveSupport::Concern
+      
+      module ClassMethods
+        def add_scope(state)
+          # do nothing
+        end
+      end
 
       module InstanceMethods
         attr_accessor :state

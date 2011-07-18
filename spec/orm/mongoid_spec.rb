@@ -24,8 +24,30 @@ class MongoRobot
   end
 end
 
+class MongoNoScopeRobot
+  include Mongoid::Document
+  include Stateflow
+
+  field :state
+  field :name
+
+  stateflow do
+    create_scopes false
+    initial :red
+
+    state :red, :green
+
+    event :change do
+      transitions :from => :red, :to => :green
+    end
+  end
+end
+
 describe Stateflow::Persistence::Mongoid do
-  after { MongoRobot.collection.drop }
+  after do 
+    MongoRobot.collection.drop
+    MongoNoScopeRobot.collection.drop
+  end
   
   let(:robot) { MongoRobot.new }
   
@@ -134,6 +156,11 @@ describe Stateflow::Persistence::Mongoid do
     it "should be added for each state" do
       MongoRobot.should respond_to(:red)
       MongoRobot.should respond_to(:green)
+    end
+    
+    it "should be not added for each state" do
+      MongoNoScopeRobot.should_not respond_to(:red)
+      MongoNoScopeRobot.should_not respond_to(:green)
     end
 
     it "should behave like Mongoid scopes" do
