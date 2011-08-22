@@ -37,7 +37,7 @@ You can set the default column with the state_column function in the stateflow b
   require 'stateflow'
 
   # No persistence
-  Stateflow.persistence :none
+  Stateflow.persistence = :none
 
   class Robot
     include Stateflow
@@ -61,7 +61,7 @@ You can set the default column with the state_column function in the stateflow b
   require 'stateflow'
 
   # No persistence
-  Stateflow.persistence :none
+  Stateflow.persistence = :none
 
   class Test
     include Stateflow
