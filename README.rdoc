@@ -39,7 +39,7 @@ You can set the default column with the state_column function in the stateflow b
   # No persistence
   Stateflow.persistence = :none
 
-  class Robot
+  class Stoplight
     include Stateflow
 
     stateflow do
