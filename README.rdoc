@@ -113,7 +113,7 @@ You can set the default column with the state_column function in the stateflow b
 
 Bang events will save the model after call, where the non bang event will just update the state and call the transitions. (ie. model.change! vs model.change)
 
-== Extra's
+== Extras
 
 * When transitioning states, the previous state from which you have transitioned to can be accessed via `_previous_state`. See tests for more information.
 
