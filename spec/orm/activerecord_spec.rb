@@ -84,6 +84,21 @@ class ActiveRecordNoScopeRobot < ActiveRecord::Base
   end
 end
 
+class ActiveRecordStateColumnSetRobot < ActiveRecord::Base
+  include Stateflow
+  
+  stateflow do
+    state_column :status
+    initial :red
+
+    state :red, :green
+
+    event :change do
+      transitions :from => :red, :to => :green
+    end
+  end
+end
+
 describe Stateflow::Persistence::ActiveRecord do
   before(:all) { TestMigration.up }
   after(:all) { TestMigration.down }
@@ -205,6 +220,10 @@ describe Stateflow::Persistence::ActiveRecord do
     it "should be added for each state" do
       ActiveRecordRobot.should respond_to(:red)
       ActiveRecordRobot.should respond_to(:green)
+    end
+    it "should be added for each state when the state column is not 'state'" do
+      ActiveRecordStateColumnSetRobot.should respond_to(:red)
+      ActiveRecordStateColumnSetRobot.should respond_to(:green)    
     end
     
     it "should not be added for each state" do
