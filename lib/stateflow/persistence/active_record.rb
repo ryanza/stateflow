@@ -9,7 +9,7 @@ module Stateflow
       
       module ClassMethods
         def add_scope(state)
-          scope state.name, where(:state => state.name.to_s)
+          scope state.name, where("#{machine.state_column}".to_sym => state.name.to_s)
         end
       end
       
