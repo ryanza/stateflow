@@ -3,8 +3,7 @@ require 'mongoid'
 
 Stateflow.persistence = :mongoid
 
-connection = Mongo::Connection.new
-Mongoid.database = connection.db("stateflow_test")
+Mongoid.load!(File.expand_path("../../mongoid.yml", __FILE__), :test)
 
 class MongoRobot
   include Mongoid::Document
@@ -44,13 +43,13 @@ class MongoNoScopeRobot
 end
 
 describe Stateflow::Persistence::Mongoid do
-  after do 
+  after do
     MongoRobot.collection.drop
     MongoNoScopeRobot.collection.drop
   end
-  
+
   let(:robot) { MongoRobot.new }
-  
+
   describe "includes" do
     it "should include current_state" do
       robot.respond_to?(:current_state).should be_true
@@ -68,7 +67,7 @@ describe Stateflow::Persistence::Mongoid do
       robot.respond_to?(:load_from_persistence).should be_true
     end
   end
-  
+
   describe "bang method" do
     before do
       @robot = robot
@@ -135,7 +134,7 @@ describe Stateflow::Persistence::Mongoid do
 
     @robot.state.should == "red"
   end
-  
+
   describe "load from persistence" do
     before do
       @robot = robot
@@ -143,7 +142,7 @@ describe Stateflow::Persistence::Mongoid do
       @robot.name = "Bottie"
       @robot.save
     end
-    
+
     it "should call the load_from_persistence method" do
      @robot.reload
      @robot.should_receive(:load_from_persistence)
@@ -157,7 +156,7 @@ describe Stateflow::Persistence::Mongoid do
       MongoRobot.should respond_to(:red)
       MongoRobot.should respond_to(:green)
     end
-    
+
     it "should be not added for each state" do
       MongoNoScopeRobot.should_not respond_to(:red)
       MongoNoScopeRobot.should_not respond_to(:green)
