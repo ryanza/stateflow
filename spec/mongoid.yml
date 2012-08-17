@@ -1,0 +1,6 @@
+test:
+  sessions:
+    default:
+      database: stateflow_test
+      hosts:
+        - localhost:27017
