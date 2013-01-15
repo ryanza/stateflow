@@ -126,7 +126,6 @@ class Stater
   end
 end
 
-
 describe Stateflow do
   describe "class methods" do
     it "should respond to stateflow block to setup the intial stateflow" do
@@ -136,7 +135,7 @@ describe Stateflow do
     it "should respond to the machine attr accessor" do
       Robot.should respond_to(:machine)
     end
-    
+
     it "should return all active persistence layers" do
       Stateflow::Persistence.active.should == [:active_record, :mongo_mapper, :mongoid, :none]
     end
@@ -158,7 +157,7 @@ describe Stateflow do
     it "should respond to the current machine" do
       @r.should respond_to(:machine)
     end
-    
+
     it "should respond to available states" do
       @r.should respond_to(:available_states)
     end
@@ -350,12 +349,20 @@ describe Stateflow do
       stater.current_state == "bob"
     end
   end
-  
+
   describe "available states" do
     it "should return the available states" do
       robot = Robot.new
       robot.available_states.should include(:red, :yellow, :green)
     end
   end
-  
+
+  describe 'sub-classes of Stateflow\'d classes' do
+    subject { Class.new(Stater) }
+
+    it 'shouldn\'t raise an exception' do
+      expect { subject.new.lolcats! }.not_to raise_exception
+    end
+  end
+
 end

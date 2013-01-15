@@ -54,7 +54,7 @@ module Stateflow
   end
 
   def machine
-    self.class.machine
+    self.class.ancestors.select { |k| k.machine if k.respond_to? :machine }.first.machine
   end
 
   def available_states
