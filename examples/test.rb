@@ -35,7 +35,7 @@ class Test
   end
   
   def likes_ice_cream?
-    rand(10) > 5 ? :mixeds : :hate
+    rand(10) > 5 ? :mixed : :hate
   end
   
   def exit_love
