@@ -126,6 +126,20 @@ class Stater
   end
 end
 
+class Excepting
+  include Stateflow
+
+  stateflow do
+    initial :working
+    state   :working, :failed
+    event   :fail do
+      transition_missing do |from_state|
+        raise "Don't know how to fail when in state #{from_state}. Ironically failing anyway."
+      end
+    end
+  end
+end
+
 describe Stateflow do
   describe "class methods" do
     it "should respond to stateflow block to setup the intial stateflow" do
@@ -365,4 +379,9 @@ describe Stateflow do
     end
   end
 
+  describe 'missing transitions' do
+    subject { proc { Excepting.new.fail } }
+
+    it { should raise_error(/Don't know how to fail when in state working./) }
+  end
 end
