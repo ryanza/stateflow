@@ -126,6 +126,27 @@ class Stater
   end
 end
 
+class Filter
+  include Stateflow
+
+  attr :state
+
+  stateflow do
+    initial :start
+    state :start
+
+    state :filtering do
+      enter :enter_filter
+      exit  :exit_filter
+    end
+
+    event :next do
+      transitions :from => :start, :to => :filtering
+    end
+
+  end
+end
+
 describe Stateflow do
   describe "class methods" do
     it "should respond to stateflow block to setup the intial stateflow" do
@@ -257,6 +278,31 @@ describe Stateflow do
       it "should call the enter state before filter on the entering new state" do
         @car.machine.states[:driving].should_receive(:execute_action).with(:enter, @car)
         @car.drive!
+      end
+    end
+
+    describe "state in before filters" do
+      before do
+        class Filter
+          def enter_filter
+          current_state.name.should
+            self.current_state.name.should == :filtering
+          end
+
+          def exit_filter
+            self.current_state.name.should == :filtering
+          end
+        end
+
+        @filter = Filter.new
+      end
+
+      it "should be driving state when enter called" do
+        @filter.next
+      end
+
+      it "should be in parked state when exit called" do
+        @filter.next
       end
     end
   end
