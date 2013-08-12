@@ -285,7 +285,6 @@ describe Stateflow do
       before do
         class Filter
           def enter_filter
-          current_state.name.should
             self.current_state.name.should == :filtering
           end
 
@@ -297,11 +296,11 @@ describe Stateflow do
         @filter = Filter.new
       end
 
-      it "should be driving state when enter called" do
+      it "should be filtering state when enter called" do
         @filter.next
       end
 
-      it "should be in parked state when exit called" do
+      it "should be in filtering state when exit called" do
         @filter.next
       end
     end
