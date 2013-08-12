@@ -26,19 +26,19 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, [">= 2.0.0"])
       s.add_development_dependency(%q<activerecord>, [">= 3.2"])
       s.add_development_dependency(%q<mongoid>, [">= 2.0.0.beta.20"])
-      s.add_development_dependency(%q<sqlite3-ruby>, [">= 0"])
+      s.add_development_dependency(%q<sqlite3>, [">= 0"])
     else
       s.add_dependency(%q<activesupport>, [">= 3.2"])
       s.add_dependency(%q<rspec>, [">= 2.0.0"])
       s.add_dependency(%q<activerecord>, [">= 3.2"])
       s.add_dependency(%q<mongoid>, [">= 2.0.0.beta.20"])
-      s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
+      s.add_dependency(%q<sqlite3>, [">= 0"])
     end
   else
     s.add_dependency(%q<activesupport>, [">= 3.2"])
     s.add_dependency(%q<rspec>, [">= 2.0.0"])
     s.add_dependency(%q<activerecord>, [">= 3.2"])
     s.add_dependency(%q<mongoid>, [">= 2.0.0.beta.20"])
-    s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
+    s.add_dependency(%q<sqlite3>, [">= 0"])
   end
 end
