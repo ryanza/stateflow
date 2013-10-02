@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'rake'
 require 'echoe'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
 
 Echoe.new('stateflow', '0.5.0.beta') do |p|
   p.description    = "State machine that allows dynamic transitions for business workflows"

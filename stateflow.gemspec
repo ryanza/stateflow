@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<activerecord>, [">= 3.2"])
       s.add_development_dependency(%q<mongoid>, [">= 2.0.0.beta.20"])
       s.add_development_dependency(%q<sqlite3>, [">= 0"])
+      s.add_development_dependency(%q<rake>)
+      s.add_development_dependency(%q<echoe>)
     else
       s.add_dependency(%q<activesupport>, [">= 3.2"])
       s.add_dependency(%q<rspec>, [">= 2.0.0"])
