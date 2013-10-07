@@ -9,14 +9,6 @@ module Stateflow
       instance_eval(&options) if block_given?
     end
 
-    def enter(method = nil, &block)
-      @options[:enter] = method.nil? ? block : method
-    end
-
-    def exit(method = nil, &block)
-      @options[:exit] = method.nil? ? block : method
-    end
-
     def execute_action(action, base)
       action = @options[action.to_sym]
 
@@ -26,6 +18,24 @@ module Stateflow
       when Proc
         action.call(base)
       end
+    end
+
+    def before_enter(method=nil,&block)
+      @options[:before_enter] = method || block
+    end
+    alias enter before_enter
+
+    def after_enter(method=nil,&block)
+      @options[:after_enter]  = method || block
+    end
+
+    def before_exit(method=nil,&block)
+      @options[:before_exit]  = method || block
+    end
+    alias exit before_exit
+
+    def after_exit(method=nil,&block)
+      @options[:after_exit]   = method || block
     end
   end
 end
