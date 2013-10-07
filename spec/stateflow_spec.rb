@@ -25,19 +25,12 @@ class Car
     initial :parked
 
     state :parked do
-      enter do
-        "Entering parked"
-      end
-
-      exit do
-        "Exiting parked"
-      end
+      enter :entering_parked
+      exit :exiting_parked
     end
 
     state :driving do
-      enter do
-        "Entering parked"
-      end
+      enter :entering_driving
     end
 
     event :drive do
@@ -48,6 +41,10 @@ class Car
       transitions :from => :driving, :to => :parked
     end
   end
+
+  def entering_parked; end
+  def exiting_parked; end
+  def entering_driving; end
 end
 
 class Bob
@@ -136,6 +133,32 @@ class Excepting
       transition_missing do |from_state|
         raise "Don't know how to fail when in state #{from_state}. Ironically failing anyway."
       end
+    end
+  end
+end
+
+class VeryEvented
+  include Stateflow
+
+  stateflow do
+    initial :new
+    state :new do
+      before_enter :before_enter_called
+      after_enter  :after_enter_called
+      before_exit  :before_exit_called
+      after_exit   :after_exit_called
+    end
+
+    state :old do
+      before_enter :before_enter_called
+      after_enter  :after_enter_called
+      before_exit  :before_exit_called
+      after_exit   :after_exit_called
+    end
+
+    event :toggle do
+      transitions from: :new, to: :old
+      transitions from: :old, to: :new
     end
   end
 end
@@ -264,12 +287,12 @@ describe Stateflow do
       end
 
       it "should call the exit state before filter on the exiting old state" do
-        @car.machine.states[:parked].should_receive(:execute_action).with(:exit, @car)
+        @car.should_receive(:exiting_parked)
         @car.drive!
       end
 
       it "should call the enter state before filter on the entering new state" do
-        @car.machine.states[:driving].should_receive(:execute_action).with(:enter, @car)
+        @car.should_receive(:entering_driving)
         @car.drive!
       end
     end
@@ -383,5 +406,18 @@ describe Stateflow do
     subject { proc { Excepting.new.fail } }
 
     it { should raise_error(/Don't know how to fail when in state working./) }
+  end
+
+  describe 'before and after events' do
+    let(:engine) { VeryEvented.new }
+    subject { engine }
+
+    it 'should call the event callbacks in the correct order' do
+      engine.should_receive(:before_exit_called)
+      engine.should_receive(:after_exit_called)
+      engine.should_receive(:before_enter_called)
+      engine.should_receive(:after_enter_called)
+      engine.toggle!
+    end
   end
 end

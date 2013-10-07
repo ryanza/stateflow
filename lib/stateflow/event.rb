@@ -19,11 +19,13 @@ module Stateflow
       new_state = klass.machine.states[transition.find_to_state(klass)]
       no_state_found(transition.to) if new_state.nil?
 
-      current_state.execute_action(:exit, klass)
+      current_state.execute_action(:before_exit, klass)
       klass._previous_state = current_state.name.to_s
-      new_state.execute_action(:enter, klass)
+      current_state.execute_action(:after_exit, klass)
 
+      new_state.execute_action(:before_enter, klass)
       klass.set_current_state(new_state, options)
+      new_state.execute_action(:after_enter, klass)
       true
     end
 
