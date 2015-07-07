@@ -1,5 +1,7 @@
 = Stateflow
 
+{<img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/ryanza/stateflow">}[https://gitter.im/ryanza/stateflow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge]
+
 == PLEASE NOTE!!!
 
 *Version 0.5.x > will only support Rails 3 / ActiveModel persistences. If you are using Rails 2 Please make sure you use the 0.4.x releases. There is a branch dedicated to that.*
