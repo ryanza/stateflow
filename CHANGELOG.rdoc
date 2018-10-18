@@ -1,3 +1,6 @@
+= Version 0.6.0
+  * Updated gems for Rails 5, and fixed any depreciations related
+
 = Version 0.5.0.beta
   * Added a Railtie
   * Changed up the detection for persistence in Rails
@@ -5,7 +8,7 @@
 = Version 0.4.2
   * Some code neatening by pedromenezes - Thanks!
   * Added simple benchmark which is probably not accurate :)
-  
+
 = Version 0.4.1
 	* Removed the depreciation warnings - FINALLY :)
 
