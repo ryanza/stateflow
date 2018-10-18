@@ -52,19 +52,19 @@ describe Stateflow::Persistence::Mongoid do
 
   describe "includes" do
     it "should include current_state" do
-      robot.respond_to?(:current_state).should be_true
+      robot.respond_to?(:current_state).should be_truthy
     end
 
     it "should include current_state=" do
-      robot.respond_to?(:set_current_state).should be_true
+      robot.respond_to?(:set_current_state).should be_truthy
     end
 
     it "should include save_to_persistence" do
-      robot.respond_to?(:save_to_persistence).should be_true
+      robot.respond_to?(:save_to_persistence).should be_truthy
     end
 
     it "should include load_from_persistence" do
-      robot.respond_to?(:load_from_persistence).should be_true
+      robot.respond_to?(:load_from_persistence).should be_truthy
     end
   end
 
@@ -90,9 +90,9 @@ describe Stateflow::Persistence::Mongoid do
     end
 
     it "should save the record" do
-      @robot.new_record?.should be_true
+      @robot.new_record?.should be_truthy
       @robot.change!
-      @robot.new_record?.should be_false
+      @robot.new_record?.should be_falsey
       @robot.reload.state.should == "green"
     end
   end
@@ -119,9 +119,9 @@ describe Stateflow::Persistence::Mongoid do
     end
 
     it "should not save the record" do
-      @robot.new_record?.should be_true
+      @robot.new_record?.should be_truthy
       @robot.change
-      @robot.new_record?.should be_true
+      @robot.new_record?.should be_truthy
       @robot.state.should == "green"
     end
   end

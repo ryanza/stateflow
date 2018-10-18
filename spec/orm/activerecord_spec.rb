@@ -12,18 +12,13 @@ dbconfig = {
 ActiveRecord::Base.establish_connection(dbconfig)
 ActiveRecord::Migration.verbose = false
 
-class TestMigration < ActiveRecord::Migration
+class TestMigration < ActiveRecord::Migration[4.2]
   def self.up
     create_table :active_record_robots, :force => true do |t|
       t.column :state, :string
       t.column :name, :string
     end
 
-    create_table :active_record_protected_robots, :force => true do |t|
-      t.column :state, :string
-      t.column :name, :string
-    end
-    
     create_table :active_record_no_scope_robots, :force => true do |t|
       t.column :state, :string
       t.column :name, :string
@@ -32,29 +27,12 @@ class TestMigration < ActiveRecord::Migration
 
   def self.down
     drop_table :active_record_robots
-    drop_table :active_record_protected_robots
     drop_table :active_record_no_scope_robots
   end
 end
 
 class ActiveRecordRobot < ActiveRecord::Base
   include Stateflow
-  
-  stateflow do
-    initial :red
-
-    state :red, :green
-
-    event :change do
-      transitions :from => :red, :to => :green
-    end
-  end
-end
-
-class ActiveRecordProtectedRobot < ActiveRecord::Base
-  include Stateflow
-  
-  attr_protected :state
 
   stateflow do
     initial :red
@@ -69,8 +47,8 @@ end
 
 class ActiveRecordNoScopeRobot < ActiveRecord::Base
   include Stateflow
-  
-  attr_protected :state
+
+  attr_reader :state
 
   stateflow do
     create_scopes false
@@ -86,7 +64,7 @@ end
 
 class ActiveRecordStateColumnSetRobot < ActiveRecord::Base
   include Stateflow
-  
+
   stateflow do
     state_column :status
     initial :red
@@ -102,26 +80,25 @@ end
 describe Stateflow::Persistence::ActiveRecord do
   before(:all) { TestMigration.up }
   after(:all) { TestMigration.down }
-  after { ActiveRecordRobot.delete_all; ActiveRecordProtectedRobot.delete_all }
+  after { ActiveRecordRobot.delete_all }
 
   let(:robot) { ActiveRecordRobot.new }
-  let(:protected_robot) { ActiveRecordProtectedRobot.new }
 
   describe "includes" do
     it "should include current_state" do
-      robot.respond_to?(:current_state).should be_true
+      robot.respond_to?(:current_state).should be_truthy
     end
 
     it "should include current_state=" do
-      robot.respond_to?(:set_current_state).should be_true
+      robot.respond_to?(:set_current_state).should be_truthy
     end
 
     it "should include save_to_persistence" do
-      robot.respond_to?(:save_to_persistence).should be_true
+      robot.respond_to?(:save_to_persistence).should be_truthy
     end
 
     it "should include load_from_persistence" do
-      robot.respond_to?(:load_from_persistence).should be_true
+      robot.respond_to?(:load_from_persistence).should be_truthy
     end
   end
 
@@ -147,18 +124,10 @@ describe Stateflow::Persistence::ActiveRecord do
     end
 
     it "should save the record" do
-      @robot.new_record?.should be_true
+      @robot.new_record?.should be_truthy
       @robot.change!
-      @robot.new_record?.should be_false
+      @robot.new_record?.should be_falsey
       @robot.reload.state.should == "green"
-    end
-
-    it "should save the protected method" do
-      @protected_robot = protected_robot
-      @protected_robot.new_record?.should be_true
-      @protected_robot.change!
-      @protected_robot.new_record?.should be_false
-      @protected_robot.reload.state.should == "green"
     end
   end
 
@@ -184,9 +153,9 @@ describe Stateflow::Persistence::ActiveRecord do
     end
 
     it "should not save the record" do
-      @robot.new_record?.should be_true
+      @robot.new_record?.should be_truthy
       @robot.change
-      @robot.new_record?.should be_true
+      @robot.new_record?.should be_truthy
       @robot.state.should == "green"
     end
   end
@@ -215,7 +184,7 @@ describe Stateflow::Persistence::ActiveRecord do
      @robot.current_state
     end
   end
-  
+
   describe "scopes" do
     it "should be added for each state" do
       ActiveRecordRobot.should respond_to(:red)
@@ -223,9 +192,9 @@ describe Stateflow::Persistence::ActiveRecord do
     end
     it "should be added for each state when the state column is not 'state'" do
       ActiveRecordStateColumnSetRobot.should respond_to(:red)
-      ActiveRecordStateColumnSetRobot.should respond_to(:green)    
+      ActiveRecordStateColumnSetRobot.should respond_to(:green)
     end
-    
+
     it "should not be added for each state" do
       ActiveRecordNoScopeRobot.should_not respond_to(:red)
       ActiveRecordNoScopeRobot.should_not respond_to(:green)
@@ -239,4 +208,3 @@ describe Stateflow::Persistence::ActiveRecord do
     end
   end
 end
-
