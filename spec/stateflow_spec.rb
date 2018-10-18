@@ -151,7 +151,7 @@ describe Stateflow do
     end
 
     it "should return all active persistence layers" do
-      Stateflow::Persistence.active.should == [:active_record, :mongo_mapper, :mongoid, :none]
+      Stateflow::Persistence.active.should =~ [:active_record, :mongo_mapper, :mongoid, :none]
     end
   end
 
@@ -193,23 +193,23 @@ describe Stateflow do
 
     it "should return true for green?" do
       robot = Robot.new
-      robot.green?.should be_true
+      robot.green?.should be_truthy
     end
 
     it "should return false for yellow?" do
       robot = Robot.new
-      robot.yellow?.should be_false
+      robot.yellow?.should be_falsey
     end
 
     it "should return false for red?" do
       robot = Robot.new
-      robot.red?.should be_false
+      robot.red?.should be_falsey
     end
 
     it "should set the initial state to the first state set" do
       bob = Bob.new
       bob.current_state.name.should == :yellow
-      bob.yellow?.should be_true
+      bob.yellow?.should be_truthy
     end
   end
 

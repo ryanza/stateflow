@@ -1,10 +1,6 @@
 = Stateflow
 
-== PLEASE NOTE!!!
-
-*Version 0.5.x > will only support Rails 3 / ActiveModel persistences. If you are using Rails 2 Please make sure you use the 0.4.x releases. There is a branch dedicated to that.*
-
-This is the basics of the gem. Please check out the examples directory or tests for usage until this README gets fleshed out. Feel free to fork and modify as you please.
+Now Rails 5 ready :)
 
 == INSTALL
 
@@ -27,7 +23,7 @@ Stateflow allows dynamic :to transitions with :decide. The result :decide return
 You can set the default column with the state_column function in the stateflow block. The default state column is "state".
 
   state_column :state
-  
+
 == Rails 3
   Stateflow now automatically tries to detect your persistence from your applications default ORM config. If the ORM you are using does not have a persistence layer it will default to ActiveRecord.
 
@@ -118,7 +114,7 @@ Bang events will save the model after call, where the non bang event will just u
 * When transitioning states, the previous state from which you have transitioned to can be accessed via `_previous_state`. See tests for more information.
 
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a future version unintentionally.
