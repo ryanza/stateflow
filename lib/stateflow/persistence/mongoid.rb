@@ -9,7 +9,7 @@ module Stateflow
 
       module ClassMethods
         def add_scope(state)
-          scope state.name, -> { where(:state => state.name.to_s) }
+          scope state.name, -> { where(:state => state.name.to_s) } unless self.respond_to?(state.name)
         end
       end
 
